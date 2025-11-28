@@ -1,0 +1,13 @@
+#ignorar arquivos .pem e .lock
+*.pem
+*.key
+*.lock
+
+#ignorar o gerador de certificados
+make-certs.sh
+
+#por segurança, iremos impedir o da pasta secrets/
+secrets/
+
+# swanctl secrets contém caminhos e nomes sensíveis
+vpn-lab/swanctl/swanctl.secrets
