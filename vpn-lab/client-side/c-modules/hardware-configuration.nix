@@ -12,7 +12,7 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/2c9997bd-afe0-4ee7-bff3-edbf121e8abf";
+    { device = "/dev/disk/by-uuid/8629a8cd-266d-4f93-859c-befd938bef0a";
       fsType = "ext4";
     };
 
@@ -24,6 +24,7 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp0s3.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp0s8.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   virtualisation.virtualbox.guest.enable = true;
