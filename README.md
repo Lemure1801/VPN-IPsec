@@ -32,7 +32,6 @@ A base do projeto é 90% baseada nos arquivos, necessitando de poucos comandos p
     │   │   ├── hardware-configuration.nix
     │   │   └── strongswan-client.nix
     │   └── c-secrets
-    │       ├── ca-key.pem
     │       ├── private
     │       │   └── client-key.pem
     │       ├── x509
@@ -50,7 +49,6 @@ A base do projeto é 90% baseada nos arquivos, necessitando de poucos comandos p
         │   │   └── swanctl.secrets
         │   └── strongswan-server.nix
         └── s-secrets
-            ├── ca-key.pem
             ├── private
             │   └── server-key.pem
             ├── x509
@@ -231,8 +229,8 @@ sudo cp /etc/nixos/hardware-configuration.nix ./
 
 Tendo feito a configuração dos arquivos acima, iremos tratar agora do diretório `*-secrets/`.
 ```Bash
-# Criar o diretório dentro de, por exemplo, s-modules/
-sudo mkdir s-secrets
+# Criar o diretório na sua máquina (console ou WSL pra quem usa Windows)
+sudo mkdir -p s-secrets/{private,x509,x509ca}
 ```
 
 No seu console (ou WSL caso use Windows), execute os seguintes comandos dentro do *-secrets/:
@@ -266,7 +264,16 @@ openssl req -new -key client-key.pem -out client.csr -subj "/CN=client@example"
 openssl x509 -req -days 3650 -in client.csr -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out client-cert.pem -addext "basicConstraints=CA:FALSE" -addext "keyUsage=digitalSignature" -addext "extendedKeyUsage=clientAuth"
 
 # Verificação (deve retornar OK)
-openssl verify -CAfile ca-cert.pem client-cert.pem 
+openssl verify -CAfile ca-cert.pem client-cert.pem
+
+# Lembre de mover os arquivos até que estejam idênticos à estrutura da tree.
+# Por fim, copie a pasta do seu computador para a máquina que você implementará a VPN (certifique-se de estar na pasta onde o diretório secrets está)
+
+# Para o servidor
+sudo scp s-screts <usuário-da-sua-máquina>@<ip-da-sua-máquina>:/path/até/dentro/de/server-side
+
+# Para o cliente
+sudo scp c-screts <usuário-da-sua-máquina>@<ip-da-sua-máquina>:/path/até/dentro/de/client-side
 ```
 <br>
 
