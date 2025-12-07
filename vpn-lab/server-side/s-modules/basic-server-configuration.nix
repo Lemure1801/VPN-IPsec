@@ -36,27 +36,32 @@
   #   CONFIGURAÇÕES BÁSICAS   #
   #############################
 
+  # Importações básicas do sistema
   imports =
     [
       ./hardware-configuration.nix
     ];
 
+  # Configuração do boot para inicialização da máquina e alcocação de partição
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-
+  # Define o nome do host
   networking.hostName = "vpn-server";
 
+  # Configuração de IP's fixos
   networking.interfaces.enp0s8.ipv4.addresses = [ { address = "192.168.56.114"; prefixLength = 24; } ];
   networking.interfaces.lo.ipv4.addresses = [ { address = "10.0.0.1"; prefixLength = 24; } ];
 
+  # Configuração de roteamento da máquina
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.ipv6.conf.all.forwarding" = 1;
     "net.ipv4.conf.all.accept_source_route" = 0;
   };
 
+  # Configuração de DNS, rede e habilitação do SSH
   networking.networkmanager.enable = false;
   services.openssh.enable = true;
   services.resolved.enable = true;
@@ -66,6 +71,7 @@
     http2 = false;
   };
 
+  # Download de pacotes necessários e importantes
   environment.systemPackages = with pkgs; [
     vim
     wget
@@ -78,6 +84,7 @@
     tree
   ];
 
+  # Habilitação de binários externos 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     glibc
@@ -88,10 +95,12 @@
     curl
   ];
 
+  # Definição do path para o servidor de código do VS Code
   environment.sessionVariables = {
     VSCODE_SERVER_INSTALL_DIR = "/home/lemure/vscode-server";
   };
 
+  # COnfigurações de idioma e afins de região
   time.timeZone = "America/Araguaina";
 
   i18n.defaultLocale = "pt_BR.UTF-8";
@@ -115,14 +124,14 @@
 
   console.keyMap = "br-abnt2";
 
+  # Habilita suporte para SSH
   programs.mtr.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
   };
-  networking.localCommands = ''
-    ip route add 10.1.0.0/24 via 192.168.56.116
-  '';
+
+  # Configuração de firewall
   networking.firewall.allowedTCPPorts = [ 500 4500 ];
   networking.firewall.allowedUDPPorts = [ 500 4500 ];
   networking.firewall.extraCommands = ''
@@ -130,13 +139,14 @@
     iptables -A OUTPUT -p ah -j ACCEPT
     iptables -A FORWARD -s 10.0.0.0/24 -d 10.1.0.0/24 -j ACCEPT 
     iptables -A FORWARD -s 10.1.0.0/24 -d 10.0.0.0/24 -j ACCEPT
-    iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o enp0s3 -j MASQUERADE
+    iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o lo -j MASQUERADE
   '';
   networking.firewall.extraStopCommands = ''
     iptables -D FORWARD -s 10.0.0.0/24 -d 10.1.0.0/24 -j ACCEPT
     iptables -D FORWARD -s 10.1.0.0/24 -d 10.0.0.0/24 -j ACCEPT
-    iptables -t nat -D POSTROUTING -s 10.0.0.0/24 -o enp0s3 -j MASQUERADE
+    iptables -t nat -D POSTROUTING -s 10.0.0.0/24 -o lo -j MASQUERADE
   '';
 
+  # Definição da versão do sistema
   system.stateVersion = "25.05";
 }

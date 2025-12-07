@@ -1,9 +1,10 @@
 { config, pkgs, ... }: {
+  # Habilita o strongswan
   services.strongswan = {
     enable = true;
   };
 
-  # Instala pacotes necessários (movido para cá para evitar alterações desnecessárias no basic)
+  # Instala pacotes necessários
   environment.systemPackages = [ pkgs.strongswan pkgs.vim pkgs.iproute2 ];
 
   # Cria /etc/strongswan.conf vazio para evitar erro de inicialização
@@ -12,10 +13,10 @@
   # Cria /etc/swanctl/ e subdiretórios implicitamente via arquivos
   environment.etc = {
     "swanctl/swanctl.conf".source = ./c-swanctl/swanctl.conf;
-    "swanctl/swanctl.conf".mode = "0644";  # Permissões padrão
+    "swanctl/swanctl.conf".mode = "0644"; # Permissões padrão
 
     "swanctl/swanctl.secrets".source = ./c-swanctl/swanctl.secrets;
-    "swanctl/swanctl.secrets".mode = "0600";  # Mais restrito para secrets
+    "swanctl/swanctl.secrets".mode = "0600"; # Mais restrito para secrets
 
     # Cria /etc/swanctl/x509/ e instala certs
     "swanctl/x509/client-cert.pem".source = ../c-secrets/x509/client-cert.pem;
