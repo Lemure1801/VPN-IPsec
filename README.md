@@ -378,15 +378,15 @@ Feito isso... Pronto! Você concluiu a configuração da sua VPN IPsec. Fácil f
  A VPN idealizada neste projeto opera estabelecendo um túnel seguro IPsec IKEv2 entre o cliente e o servidor. Esse túnel atua como uma ponte criptografada conectando dois hosts, permitindo que máquinas interajam como se estivessem numa LAN a parte da rede local.
 
 >1. **Identidade e Confiança**<br>
-*O cliente e o servidor ostentam certificados gerados com OpenSSL. Esses certificados proclamam: “Eu sou, sem dúvidas, quem digo ser”. Ambos depositam confiança na mesma CA, autoridade certificadora, o que lhes permite validar mutuamente de modo automático. Não existe senha: a autenticação é conduzida pela criptografia.*
+*O cliente e o servidor ostentam certificados gerados com OpenSSL. Esses certificados proclamam: “Eu sou, sem dúvidas, o cara certo”. Ambos depositam confiança na mesma CA, autoridade certificadora, o que lhes permite validar mutuamente de modo automático. Não existe senha: a autenticação é conduzida pela criptografia.*
 
 >2. **Configuração do Túnel (IKEv2)** <br>
-Quando o cliente intenta conectar: <br>
+Quando o cliente tenta conectar: <br>
 *Ele remete seu certificado ao servidor.
 O servidor o retorna.
 Ambos negociam algoritmos de criptografia e permutam chaves.
-Estabelecem uma ligação resguardada, conhecida como IKE_SA.
-Em seu interior, criam o túnel de dados autêntico: o CHILD_SA.
+Estabelecem uma ligação segura, conhecida como IKE_SA.
+Internamente, criam o túnel de dados autêntico: o CHILD_SA.
 A partir daí, a comunicação entre eles se torna inteiramente criptografada.*
 
 >3. **Empacotamento dos Pacotes** <br>
@@ -394,15 +394,15 @@ Com o túnel ativo: <br>
 *Pacotes originários da sub-rede do cliente (10.1.0.0/24) são encapsulados pelo StrongSwan.
 São remetidos ao servidor utilizando o protocolo ESP, que representa um método seguro de empacotamento.
 O servidor desembrulha esse pacote e o direciona para sua própria rede, 10.0.0.0/24.
-A recíproca tambêm é verdadeira.
+A ocorrência contrária tambêm é possível.
 Assim, as duas redes parecem interligadas, como se fossem uma coisa só.*
 
 >4. **Roteamento e Firewall** <br>
 Para tudo funcionar:<br>
 *O NixOS ativa o ip_forward.
 As regras do firewall deixam ESP, AH e portas 500/4500 livres.
-Rotas estáticas, sabem como alcansar a sub-rede remota de cada lado.
-Sem isso, os pacotes ficariam perdidos, mesmo com o túnel a funcionar.*
+Rotas estáticas, sabem como alcançar a sub-rede remota de cada lado.
+Sem isso, os pacotes ficariam perdidos, mesmo com o túnel funcionando.*
 
 >5. **Uso do NixOS** <br>
 Escolher NixOS torna o ambiente de rede determinístico: <br>
