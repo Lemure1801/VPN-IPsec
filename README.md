@@ -375,7 +375,7 @@ sudo swanctl --list-sas
 Feito isso... Pronto! Você concluiu a configuração da sua VPN IPsec. Fácil fácil, não? Agradecemos toda a sua atenção e disposição para ler até aqui. Bons estudos, bom trabalho e boa sorte nos seus projetos! Só não use este poder para o mal...
 
 ## Resumo Técnico do Funcionamento
- A VPN idealizada neste projeto opera estabelecendo um túnel seguro IPsec IKEv2 entre o cliente e o servidor. Esse túnel atua como uma ponte criptografada conectando dois hosts, permitindo que máquinas interajam como se estivessem numa mesma LAN.
+ A VPN idealizada neste projeto opera estabelecendo um túnel seguro IPsec IKEv2 entre o cliente e o servidor. Esse túnel atua como uma ponte criptografada conectando dois hosts, permitindo que máquinas interajam como se estivessem numa LAN a parte da rede local.
 
 >1. **Identidade e Confiança**<br>
 *O cliente e o servidor ostentam certificados gerados com OpenSSL. Esses certificados proclamam: “Eu sou, sem dúvidas, quem digo ser”. Ambos depositam confiança na mesma CA, autoridade certificadora, o que lhes permite validar mutuamente de modo automático. Não existe senha: a autenticação é conduzida pela criptografia.*
