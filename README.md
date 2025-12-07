@@ -10,7 +10,7 @@ Esta VPN foi criada com o propósito de funcionar de forma **prática e reprodut
 * [Conexão e Tunelagem](#conexão-e-tunelagem)
 * [Resumo Técnico](#resumo-técnico-do-funcionamento)
 * [Contribuidores](#contribuintes)
-* [Licença](#licença-de-uso)
+* [Licença](#licenca-de-uso)
 
 ## Pilar e Ferramentas Utilizadas
 A Academic VPN conta com a utilização de:
